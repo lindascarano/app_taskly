@@ -9,3 +9,7 @@
 - App.tsx: main entry point for my App (it is a single file .tsx)
 
 - app.json : config file for my App
+
+********************************
+**Set up theme.ts**
+- theme.ts : using for global styles (color, padding, margin....)
