@@ -7,6 +7,22 @@ export default function Layout() {
         name="index"
         options={{ title: "Lista della spesa" }}
       ></Stack.Screen>
+      <Stack.Screen
+        name="counter"
+        options={{
+          title: "contatore",
+          presentation: "modal",
+          animation: "fade_from_bottom",
+        }}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="idea"
+        options={{
+          title: "idea",
+          presentation: "modal",
+          animation: "fade_from_bottom",
+        }}
+      ></Stack.Screen>
     </Stack>
   );
 }

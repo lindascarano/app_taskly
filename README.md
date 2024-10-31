@@ -71,13 +71,17 @@ _Navigation_
 
        * The main entry poin has to be index.tsx
 
-- Stack Navigation: the mobile default way to navigate is displaynig screens in Stack. It means that when you navigatte to a new screen, it is rendered on top of the current screen.
+- _.layout.tsx: all the navigation works even though the screens aren't defined in this file. The only reason we really define them is to add additional properties as, for example, presentation={modal} (it works for iOS)  or animation: "fade_from_bottom".
 
-- Way to navigate:
+- Stack Navigation: the mobile default way to navigate is displaynig screens in Stack. It means that when you navigate to a new screen, it is rendered on top of the current screen.
+
+- Ways to navigate between screens:
 
        * <Link> fronm expo-router gives different animation between iOS and Android.
        * Programmatically way: with the Hook useRouter() (es:  onPress={() => router.navigate("/screen")})
        * Header button (like this one: >) that cames by default when a Stack is done.
+
+- Modal: rendering a screen as a modal means rendering it on top of the content. The modal scrren must be defined above or adiacent to the other screens it's being rendered on top of.
 
 - ` : backtick
 
