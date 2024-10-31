@@ -1,5 +1,6 @@
 import { StyleSheet, TouchableOpacity, View, Text, Alert } from "react-native";
 import { theme } from "../theme";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 type Props = {
   name: string;
@@ -22,7 +23,7 @@ export function ShoppingListItem({ name, isCompleted }: Props) {
           onPress: () => console.log("No, annulla l'operazione!"),
           style: "cancel", //It gives differnet styles between Android and iOS
         },
-      ]
+      ],
     );
   };
   return (
@@ -40,15 +41,12 @@ export function ShoppingListItem({ name, isCompleted }: Props) {
       >
         {name}
       </Text>
-      <TouchableOpacity
-        style={[
-          styles.button,
-          isCompleted ? styles.completedButton : undefined,
-        ]}
-        onPress={handleDelete}
-        activeOpacity={0.7}
-      >
-        <Text style={styles.buttonText}>Cancella</Text>
+      <TouchableOpacity onPress={handleDelete} activeOpacity={0.6}>
+        <AntDesign
+          name="closecircle"
+          size={24}
+          color={isCompleted ? theme.colorGrigioScuro : theme.colorRed}
+        />
       </TouchableOpacity>
       {/* <StatusBar style="auto" /> */}
     </View>
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     borderBottomColor: theme.colorAzzurroTeal,
     borderBottomWidth: 1,
-    paddingHorizontal: 8,
+    paddingHorizontal: 18,
     paddingVertical: 16,
     flexDirection: "row",
     alignItems: "center",
@@ -76,19 +74,5 @@ const styles = StyleSheet.create({
   completedText: {
     textDecorationLine: "line-through",
     textDecorationColor: theme.colorGrigioChiaro,
-  },
-  button: {
-    backgroundColor: theme.colorAzzurroTeal,
-    padding: 8,
-    borderRadius: 6,
-  },
-  completedButton: {
-    backgroundColor: theme.colorGrigioScuro,
-  },
-  buttonText: {
-    color: theme.colorWhite,
-    fontWeight: "bold",
-    textTransform: "uppercase",
-    letterSpacing: 1,
   },
 });
