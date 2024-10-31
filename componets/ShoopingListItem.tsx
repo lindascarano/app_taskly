@@ -3,9 +3,10 @@ import { theme } from "../theme";
 
 type Props = {
   name: string;
+  isCompleted?: boolean;
 };
 
-export function ShoppingListItem({ name }: Props) {
+export function ShoppingListItem({ name, isCompleted }: Props) {
   const handleDelete = () => {
     Alert.alert(
       `Sei sicuro di voler cancellare ${name} ?`,
@@ -21,14 +22,29 @@ export function ShoppingListItem({ name }: Props) {
           onPress: () => console.log("No, annulla l'operazione!"),
           style: "cancel", //It gives differnet styles between Android and iOS
         },
-      ],
+      ]
     );
   };
   return (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{name}</Text>
+    <View
+      style={[
+        styles.itemContainer,
+        isCompleted ? styles.completedContainer : undefined,
+      ]}
+    >
+      <Text
+        style={[
+          styles.itemText,
+          isCompleted ? styles.completedText : undefined,
+        ]}
+      >
+        {name}
+      </Text>
       <TouchableOpacity
-        style={styles.button}
+        style={[
+          styles.button,
+          isCompleted ? styles.completedButton : undefined,
+        ]}
         onPress={handleDelete}
         activeOpacity={0.7}
       >
@@ -49,14 +65,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  completedContainer: {
+    backgroundColor: theme.colorGrigioChiaro,
+    borderBottomColor: theme.colorAzzurroTeal,
+  },
   itemText: {
     fontSize: 18,
     fontWeight: "200",
+  },
+  completedText: {
+    textDecorationLine: "line-through",
+    textDecorationColor: theme.colorGrigioChiaro,
   },
   button: {
     backgroundColor: theme.colorAzzurroTeal,
     padding: 8,
     borderRadius: 6,
+  },
+  completedButton: {
+    backgroundColor: theme.colorGrigioScuro,
   },
   buttonText: {
     color: theme.colorWhite,
