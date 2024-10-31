@@ -4,7 +4,7 @@ import { theme } from "../theme";
 export default function IdeaScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Idea</Text>
+      <Text style={styles.text}>Idea!</Text>
     </View>
   );
 }

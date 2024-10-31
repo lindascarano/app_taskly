@@ -83,6 +83,8 @@ _Navigation_
 
 - Modal: rendering a screen as a modal means rendering it on top of the content. The modal scrren must be defined above or adiacent to the other screens it's being rendered on top of.
 
+- Tabs Navigation: screenOptions={{ tabBarActiveTintColor: theme.colorAzzurroTeal }} let change default color for Tabs text and icons.
+
 - ` : backtick
 
 ---

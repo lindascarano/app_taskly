@@ -1,28 +1,39 @@
-import { Stack } from "expo-router";
+import { Tabs } from "expo-router";
+import Feather from "@expo/vector-icons/Feather";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import { theme } from "../theme";
 
 export default function Layout() {
   return (
-    <Stack>
-      <Stack.Screen
+    <Tabs screenOptions={{ tabBarActiveTintColor: theme.colorAzzurroTeal }}>
+      <Tabs.Screen
         name="index"
-        options={{ title: "Lista della spesa" }}
-      ></Stack.Screen>
-      <Stack.Screen
+        options={{
+          title: "Lista della spesa",
+          tabBarIcon: ({ color, size }) => {
+            return <Feather name="list" size={size} color={color} />;
+          },
+        }}
+      />
+      <Tabs.Screen
         name="counter"
         options={{
           title: "contatore",
-          presentation: "modal",
-          animation: "fade_from_bottom",
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="clockcircleo" size={size} color={color} />
+          ),
         }}
-      ></Stack.Screen>
-      <Stack.Screen
+      />
+      <Tabs.Screen
         name="idea"
         options={{
           title: "idea",
-          presentation: "modal",
-          animation: "fade_from_bottom",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="light-bulb" size={size} color={color} />
+          ),
         }}
-      ></Stack.Screen>
-    </Stack>
+      />
+    </Tabs>
   );
 }
