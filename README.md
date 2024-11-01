@@ -88,6 +88,21 @@ _Navigation_
 - Nested Navigator: to convert a screen into a Stack of screens you have to create a folder with the same name as the screen and move the screen inside it. Than you have to rename the screen from its original name to index. Than you have to add a _layout.tsx file in the new folder, defining a stack with a single screen. Than you can add as many screens you want to. 
 Converting the index screen into a stack is quite different -> Create a folder called for example group and move idex file inside it. Than the name of index file stys the same. Than, as before, add _layout file and add many screen as you want to.
 
+_TextInput_
+
+- By focusing on the TextInput the Keyboard opens. The keyboard is controlled in a lot of ways by the TextInput Component.
+
+- The keyboardType Prop allows TextInput to choose between various keyboards
+
+- TextInput has various Porps, for example autoComplete Prop....
+
+_Exampl of how to create a unic id_
+
+- UUID library,
+- NanoID library
+
+In this case, the id has to be unique within our phone I will use Time Stamp:   id: new Date().toTimeString()
+
 - ` : backtick
 
 ---
