@@ -85,8 +85,9 @@ _Navigation_
 
 - Tabs Navigation: screenOptions={{ tabBarActiveTintColor: theme.colorAzzurroTeal }} let change default color for Tabs text and icons.
 
+- Nested Navigator: to convert a screen into a Stack of screens you have to create a folder with the same name as the screen and move the screen inside it. Than you have to rename the screen from its original name to index. Than you have to add a _layout.tsx file in the new folder, defining a stack with a single screen. Than you can add as many screens you want to. 
+Converting the index screen into a stack is quite different -> Create a folder called for example group and move idex file inside it. Than the name of index file stys the same. Than, as before, add _layout file and add many screen as you want to.
+
 - ` : backtick
 
 ---
-
-**What's Next**
