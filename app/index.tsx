@@ -8,6 +8,7 @@ import { useState } from "react";
 type ShoppingListItemType = {
   id: string;
   name: string;
+  comletedAtTimestamp?: number;
 };
 
 //Array for testing FlatList rendering
@@ -34,6 +35,22 @@ export default function App() {
 
   const handleDelete = (id: string) => {
     const newShoppingList = shoppingList.filter((item) => item.id !== id);
+    setShoppingList(newShoppingList);
+  };
+
+  const handleToggleComplete = (id: string) => {
+    const newShoppingList = shoppingList.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          comletedAtTimestamp: item.comletedAtTimestamp
+            ? undefined
+            : Date.now(),
+        };
+      } else {
+        return item;
+      }
+    });
     setShoppingList(newShoppingList);
   };
 
@@ -68,6 +85,8 @@ export default function App() {
           <ShoppingListItem
             name={item.name}
             onDelete={() => handleDelete(item.id)}
+            onTaggleComplete={() => handleToggleComplete(item.id)}
+            isCompleted={Boolean(item.comletedAtTimestamp)}
           />
         );
       }}
