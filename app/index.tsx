@@ -1,8 +1,8 @@
 // import { StatusBar } from "expo-status-bar";
-import { StyleSheet, TextInput, View, ScrollView } from "react-native";
+import { StyleSheet, TextInput, FlatList, View, Text } from "react-native";
 import { theme } from "../theme";
 import { ShoppingListItem } from "../componets/ShoopingListItem";
-import { Link } from "expo-router";
+
 import { useState } from "react";
 
 type ShoppingListItemType = {
@@ -10,15 +10,13 @@ type ShoppingListItemType = {
   name: string;
 };
 
-const initialList: ShoppingListItemType[] = [
-  { id: "1", name: "Pasta" },
-  { id: "2", name: "Olio d'oliva" },
-  { id: "3", name: "Sale" },
-];
+//Array for testing FlatList rendering
+// const testData = Array(1000)
+//   .fill(null)
+//   .map((item, index) => ({ id: String(index), name: String(index) }));
 
 export default function App() {
-  const [shoppingList, setShoppingList] =
-    useState<ShoppingListItemType[]>(initialList);
+  const [shoppingList, setShoppingList] = useState<ShoppingListItemType[]>([]);
   const [value, setValue] = useState("");
 
   const handleSubmit = () => {
@@ -35,28 +33,35 @@ export default function App() {
   };
 
   return (
-    <ScrollView
+    <FlatList
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       stickyHeaderIndices={[0]}
-    >
-      {/* The keyboardType Prop allows TextInput to choose between various keyboards */}
-      <TextInput
-        style={styles.textImput}
-        placeholder="Es. Pasta"
-        value={value}
-        onChangeText={setValue}
-        // keyboardType="email-address"
-        // returnKeyType="done"
-        onSubmitEditing={handleSubmit}
-      />
-      <Link href="/counter" style={styles.linkStyle}>
-        Vai al Contatore!
-      </Link>
-      {shoppingList.map((item) => (
-        <ShoppingListItem name={item.name} key={item.id}></ShoppingListItem>
-      ))}
-    </ScrollView>
+      ListEmptyComponent={
+        <View style={styles.listEmptyContainer}>
+          <Text style={styles.listEmptyText}>
+            La tua lista della spesa è vuota!
+          </Text>
+        </View>
+      }
+      ListHeaderComponent={
+        <TextInput
+          style={styles.textImput}
+          placeholder="Es. Pasta"
+          value={value}
+          onChangeText={setValue}
+          // keyboardType="email-address"
+          // returnKeyType="done"
+          onSubmitEditing={handleSubmit}
+        />
+      }
+      data={shoppingList}
+      // data={testData}
+      renderItem={({ item }) => {
+        // console.log(item);
+        return <ShoppingListItem name={item.name} />;
+      }}
+    />
   );
 }
 
@@ -68,11 +73,6 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
   },
   contentContainer: { paddingBottom: 24 },
-  linkStyle: {
-    textAlign: "center",
-    fontSize: 24,
-    textDecorationLine: "underline",
-  },
   textImput: {
     borderColor: theme.colorGrigioChiaro,
     borderWidth: 2,
@@ -82,5 +82,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     borderRadius: 50,
     backgroundColor: theme.colorWhite,
+  },
+  listEmptyContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginVertical: 12,
+  },
+  listEmptyText: {
+    fontSize: 18,
   },
 });

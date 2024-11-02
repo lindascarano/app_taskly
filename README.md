@@ -119,6 +119,17 @@ _ScrollView_
 
 - stickyHeaderIndices Prop allows an elements of the list, be sticky.
 
+_FlatList_
+
+- It is useful to map an arry of items (it is better than ScrollView) and if you are rendering a full screen list. The most important future is that it is optimized for rendering large lists. In particular it does not render the components that are nowhere near being seen on the screen. It has several props (pull-ti-refresh, scroll-to-index-, header and footer support, data, renderItem, keyExtractor). 
+
+FlatList Props description:
+
+* data: where you pass in your array of items to map over,
+* renderItem: it is a function to define how each item is rendered,
+* keyExtractor: if the ype you passed in the FlatList doesn't have id, you will need keyExtractor to generate the unique id in the FlatList Component. It let you define a function to extract the unique key from your data(but, if your data consists of objects that have either a key on an id field, than that is used automatically)
+
+
 
 - ` : backtick
 
@@ -126,3 +137,5 @@ _ScrollView_
 **What's Next**
 
 Andrpoid Mobile: Enable Developer Options->Debug USB and Debug ADB for mirroring 
+
+
