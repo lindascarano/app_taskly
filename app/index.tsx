@@ -1,5 +1,5 @@
 // import { StatusBar } from "expo-status-bar";
-import { StyleSheet, TextInput, View } from "react-native";
+import { StyleSheet, TextInput, View, ScrollView } from "react-native";
 import { theme } from "../theme";
 import { ShoppingListItem } from "../componets/ShoopingListItem";
 import { Link } from "expo-router";
@@ -35,7 +35,11 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      stickyHeaderIndices={[0]}
+    >
       {/* The keyboardType Prop allows TextInput to choose between various keyboards */}
       <TextInput
         style={styles.textImput}
@@ -52,17 +56,18 @@ export default function App() {
       {shoppingList.map((item) => (
         <ShoppingListItem name={item.name} key={item.id}></ShoppingListItem>
       ))}
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 12,
     flex: 1,
     backgroundColor: theme.colorWhite,
+    paddingTop: 12,
     // justifyContent: "center",
   },
+  contentContainer: { paddingBottom: 24 },
   linkStyle: {
     textAlign: "center",
     fontSize: 24,
@@ -76,5 +81,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     fontSize: 18,
     borderRadius: 50,
+    backgroundColor: theme.colorWhite,
   },
 });

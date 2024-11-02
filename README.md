@@ -96,13 +96,33 @@ _TextInput_
 
 - TextInput has various Porps, for example autoComplete Prop....
 
-_Exampl of how to create a unic id_
+_Ways to how to create a unique id_
 
 - UUID library,
 - NanoID library
 
 In this case, the id has to be unique within our phone I will use Time Stamp:   id: new Date().toTimeString()
 
+_ScrollView_
+
+-ScrollView Component : to 
+
+_Mirroring My Android Mobile_
+
+- scrcpy: Download from https://github.com/Genymobile/scrcpy/blob/master/doc/windows.md -> scrcpy-win64-v2.7.zip and open the scrcpy terminal by double-clicking on open_a_terminal_here.bat. Check from terminal that your device is in the list of adb devices. Then command scrcpy. (Android devices must enable Developer Options > USB Debugging and ADB Debugging Enabled). I didn't use the scrcpy library because I'm using the npm package, just follow the instructions and official documentation -> https://github.com/Genymobile/scrcpy/blob/master/doc/windows.md.
+
+_ScrollView_
+
+- View component don't scroll by default. Let's using ScrollView.
+
+- The scrollable elements style prop should not contain any margins or padding. We should pass these in with the contentContainer Prop. By adding this contentContainer Prop by putting the padding that I had set before in the styles.container, the last element of the list is not cut.
+
+- stickyHeaderIndices Prop allows an elements of the list, be sticky.
+
+
 - ` : backtick
 
 ---
+**What's Next**
+
+Andrpoid Mobile: Enable Developer Options->Debug USB and Debug ADB for mirroring 
