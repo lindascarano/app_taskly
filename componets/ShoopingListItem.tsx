@@ -5,9 +5,10 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 type Props = {
   name: string;
   isCompleted?: boolean;
+  onDelete: () => void;
 };
 
-export function ShoppingListItem({ name, isCompleted }: Props) {
+export function ShoppingListItem({ name, isCompleted, onDelete }: Props) {
   const handleDelete = () => {
     Alert.alert(
       `Sei sicuro di voler cancellare ${name} ?`,
@@ -15,7 +16,7 @@ export function ShoppingListItem({ name, isCompleted }: Props) {
       [
         {
           text: "Si",
-          onPress: () => console.log("Ok, lo puoi cancellare!"),
+          onPress: () => onDelete(),
           style: "destructive", //It gives differnet styles between Android and iOS
         },
         {
