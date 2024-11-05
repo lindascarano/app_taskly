@@ -136,6 +136,11 @@ _Data Persistence_
 
 - AsyncStorage: This is a storage device. It is an unencrypted key-value store for React Native. It's very similar to localStorage on the web, except in this case the calls are asynchronous.
          *useEffect() is Synchronous, we use a way to execute an asynchronous function inside useEffect().
+         * Note: As an application cas grows , it usefull to reaching up for a state management library instead of managing this data storag steps myself. Most javascript State management libraries work in React Native, and they almost include an adapter of sorts that allows me to use AsyncStorget to persist the data offline.
+
+_Layout Animation_
+
+- LayoutAnimation is a full-page animation library. Import LayoutAnimation from react-native and call configureNext just before evry time I do state update that change a list item. configureNext impacts directly the next UI just after the line in the code.
 
 
 
