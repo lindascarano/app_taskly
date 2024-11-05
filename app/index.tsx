@@ -3,7 +3,10 @@ import { StyleSheet, TextInput, FlatList, View, Text } from "react-native";
 import { theme } from "../theme";
 import { ShoppingListItem } from "../componets/ShoppingListItem";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getFromStorage, saveToStorage } from "../utils/storage";
+
+const storageKey = "shopping-list";
 
 type ShoppingListItemType = {
   id: string;
@@ -21,6 +24,19 @@ export default function App() {
   const [shoppingList, setShoppingList] = useState<ShoppingListItemType[]>([]);
   const [value, setValue] = useState("");
 
+  // useEffect is Synchronous, so, the way that you can execute an
+  //asyncronous funcion inside useEffectis the following:
+  useEffect(() => {
+    const fetchInitial = async () => {
+      const data = await getFromStorage(storageKey);
+      if (data) {
+        setShoppingList(data);
+      }
+    };
+
+    fetchInitial();
+  }, []);
+
   const handleSubmit = () => {
     if (value) {
       const newShoppingList = [
@@ -33,13 +49,14 @@ export default function App() {
       ];
 
       setShoppingList(newShoppingList);
-      setValue(value);
+      saveToStorage(storageKey, shoppingList);
       setValue("");
     }
   };
 
   const handleDelete = (id: string) => {
     const newShoppingList = shoppingList.filter((item) => item.id !== id);
+    saveToStorage(storageKey, newShoppingList);
     setShoppingList(newShoppingList);
   };
 
@@ -57,12 +74,12 @@ export default function App() {
         return item;
       }
     });
+    saveToStorage(storageKey, newShoppingList);
     setShoppingList(newShoppingList);
   };
 
   return (
     <FlatList
-    
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       stickyHeaderIndices={[0]}

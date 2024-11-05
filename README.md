@@ -39,6 +39,9 @@ _Genearal commands_
 
 - With Expo Router, all the screen and \_layout have a DEFAULT export.
 
+- npx expo install @react-native-async-storage/async-storage : AsyncStorage for Data Persistence.
+     *        We use AsyncStorage for Data Persistence so, what we wont is GET(get from storage) and SET (save to storage)
+
 ---
 
 **Components**
@@ -128,6 +131,11 @@ FlatList Props description:
 * data: where you pass in your array of items to map over,
 * renderItem: it is a function to define how each item is rendered,
 * keyExtractor: if the ype you passed in the FlatList doesn't have id, you will need keyExtractor to generate the unique id in the FlatList Component. It let you define a function to extract the unique key from your data(but, if your data consists of objects that have either a key on an id field, than that is used automatically)
+
+_Data Persistence_
+
+- AsyncStorage: This is a storage device. It is an unencrypted key-value store for React Native. It's very similar to localStorage on the web, except in this case the calls are asynchronous.
+         *useEffect() is Synchronous, we use a way to execute an asynchronous function inside useEffect().
 
 
 
