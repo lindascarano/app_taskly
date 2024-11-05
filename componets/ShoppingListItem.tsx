@@ -4,9 +4,11 @@ import {
   Text,
   Alert,
   Pressable,
+  View,
 } from "react-native";
 import { theme } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
 
 type Props = {
   name: string;
@@ -47,14 +49,23 @@ export function ShoppingListItem({
       ]}
       onPress={onTaggleComplete}
     >
-      <Text
-        style={[
-          styles.itemText,
-          isCompleted ? styles.completedText : undefined,
-        ]}
-      >
-        {name}
-      </Text>
+      <View style={styles.row}>
+        <Entypo
+          name={isCompleted ? "check" : "circle"}
+          size={24}
+          color={isCompleted ? theme.colorGrigioScuro : theme.colorAzzurroTeal}
+        />
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.itemText,
+            isCompleted ? styles.completedText : undefined,
+          ]}
+        >
+          {name}
+        </Text>
+      </View>
+
       <TouchableOpacity onPress={handleDelete} activeOpacity={0.6}>
         <AntDesign
           name="closecircle"
@@ -81,12 +92,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colorGrigioChiaro,
     borderBottomColor: theme.colorAzzurroTeal,
   },
-  itemText: {
-    fontSize: 18,
-    fontWeight: "200",
-  },
+  itemText: { flex: 1, fontSize: 18, fontWeight: "200" },
   completedText: {
     textDecorationLine: "line-through",
     textDecorationColor: theme.colorGrigioChiaro,
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
   },
 });

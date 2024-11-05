@@ -1,7 +1,7 @@
 // import { StatusBar } from "expo-status-bar";
 import { StyleSheet, TextInput, FlatList, View, Text } from "react-native";
 import { theme } from "../theme";
-import { ShoppingListItem } from "../componets/ShoopingListItem";
+import { ShoppingListItem } from "../componets/ShoppingListItem";
 
 import { useState } from "react";
 
