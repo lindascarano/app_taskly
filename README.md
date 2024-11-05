@@ -42,6 +42,8 @@ _Genearal commands_
 - npx expo install @react-native-async-storage/async-storage : AsyncStorage for Data Persistence.
      *        We use AsyncStorage for Data Persistence so, what we wont is GET(get from storage) and SET (save to storage)
 
+- npx expo install expo-haptics: Haptics for vibration feedback.
+
 ---
 
 **Components**
@@ -141,6 +143,10 @@ _Data Persistence_
 _Layout Animation_
 
 - LayoutAnimation is a full-page animation library. Import LayoutAnimation from react-native and call configureNext just before evry time I do state update that change a list item. configureNext impacts directly the next UI just after the line in the code.
+
+_Haptics_
+
+- Haptic feedback is a vibration the phone makes in response to certain actions.
 
 
 

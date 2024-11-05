@@ -9,6 +9,7 @@ import {
 import { theme } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   name: string;
@@ -24,6 +25,7 @@ export function ShoppingListItem({
   onTaggleComplete,
 }: Props) {
   const handleDelete = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     Alert.alert(
       `Sei sicuro di voler cancellare ${name} ?`,
       "L'elemento sarà cancellato definitivamente",
