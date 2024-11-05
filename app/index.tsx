@@ -8,7 +8,8 @@ import { useState } from "react";
 type ShoppingListItemType = {
   id: string;
   name: string;
-  comletedAtTimestamp?: number;
+  completedAtTimestamp?: number;
+  lastUpdatedTimestamp: number;
 };
 
 //Array for testing FlatList rendering
@@ -23,7 +24,11 @@ export default function App() {
   const handleSubmit = () => {
     if (value) {
       const newShoppingList = [
-        { id: new Date().toTimeString(), name: value },
+        {
+          id: new Date().toTimeString(),
+          name: value,
+          lastUpdatedTimestamp: Date.now(),
+        },
         ...shoppingList,
       ];
 
@@ -43,7 +48,8 @@ export default function App() {
       if (item.id === id) {
         return {
           ...item,
-          comletedAtTimestamp: item.comletedAtTimestamp
+          lastUpdatedTimestamp: Date.now(),
+          completedAtTimestamp: item.completedAtTimestamp
             ? undefined
             : Date.now(),
         };
@@ -56,6 +62,7 @@ export default function App() {
 
   return (
     <FlatList
+    
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       stickyHeaderIndices={[0]}
@@ -77,7 +84,7 @@ export default function App() {
           onSubmitEditing={handleSubmit}
         />
       }
-      data={shoppingList}
+      data={orderShoppingList(shoppingList)}
       // data={testData}
       renderItem={({ item }) => {
         // console.log(item);
@@ -86,12 +93,34 @@ export default function App() {
             name={item.name}
             onDelete={() => handleDelete(item.id)}
             onTaggleComplete={() => handleToggleComplete(item.id)}
-            isCompleted={Boolean(item.comletedAtTimestamp)}
+            isCompleted={Boolean(item.completedAtTimestamp)}
           />
         );
       }}
     />
   );
+}
+
+function orderShoppingList(shoppingList: ShoppingListItemType[]) {
+  return shoppingList.sort((item1, item2) => {
+    if (item1.completedAtTimestamp && item2.completedAtTimestamp) {
+      return item2.completedAtTimestamp - item1.completedAtTimestamp;
+    }
+
+    if (item1.completedAtTimestamp && !item2.completedAtTimestamp) {
+      return 1;
+    }
+
+    if (!item1.completedAtTimestamp && item2.completedAtTimestamp) {
+      return -1;
+    }
+
+    if (!item1.completedAtTimestamp && !item2.completedAtTimestamp) {
+      return item2.lastUpdatedTimestamp - item1.lastUpdatedTimestamp;
+    }
+
+    return 0;
+  });
 }
 
 const styles = StyleSheet.create({
