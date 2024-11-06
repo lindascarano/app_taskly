@@ -156,6 +156,18 @@ _Push Notifications_
 As developer we can only ask for push notifications once. If user says "no", to reset this responce, the user can only go to the settings of the mobile and manually toggle on the Notification Permission, we, as developer, cannot ask twice.
 
 
+_Scheduling Notifications_
+
+- Make sure you background the app. The notification will not appear in the notification tray when the app is foregrounded because foreground notifications are handled separately.
+
+- You can schedule notifications base on different intervals, look at the Expo Docs: https://docs.expo.dev/versions/latest/sdk/notifications/#schedulablenotificationtriggerinput
+
+- If you have your App open, it will be a Foreground Notification. You can handling foreground notifications (Look at the Expo Docs for foreground notifcations). In this App I have scheduled notifications that only works if the App is in the backround and not if the App is in the foreground.
+
+_General Note_
+
+- If you wwant to do analytics on a mobile App you need to install React Native Firebase.
+
 
 - ` : backtick
 
@@ -164,7 +176,6 @@ As developer we can only ask for push notifications once. If user says "no", to 
 
 Andrpoid Mobile: Enable Developer Options->Debug USB and Debug ADB for mirroring
 
--Try to pop up request notifications
 
 
 

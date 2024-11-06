@@ -1,13 +1,36 @@
-import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { theme } from "../../theme";
 import { useRouter } from "expo-router";
 import { registerForPushNotificationsAsync } from "../../utils/registerForPushNotificationsAsync";
+import * as Notifications from "expo-notifications";
 
 export default function CounterScreen() {
   const router = useRouter();
   const handleRequestPermission = async () => {
     const result = await registerForPushNotificationsAsync();
     console.log("Permesso:", result);
+  };
+
+  const scheduleNotification = async () => {
+    const result = await registerForPushNotificationsAsync();
+    if (result === "granted") {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "Sono la notifica dalla tua App! 💌",
+        },
+
+        // You can schedule the notifications based on differnet intervals:
+        //look at the Expo Docs:https://docs.expo.dev/versions/latest/sdk/notifications/#schedulablenotificationtriggerinput
+        trigger: {
+          seconds: 5,
+        },
+      });
+    } else {
+      Alert.alert(
+        "Abilita per schedulare le notifiche sul tuo dispositivo!",
+        "Attiva il permesso per le notifiche per Expo Go nelle Impostazioni del tuo dispositivo!",
+      );
+    }
   };
 
   return (
@@ -22,6 +45,15 @@ export default function CounterScreen() {
       >
         <Text style={styles.bottonText}>
           Richiesta permesso per notifiche push
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.8}
+        onPress={scheduleNotification}
+      >
+        <Text style={styles.bottonText}>
+          Schedula una Notifica - dopo 5 sec
         </Text>
       </TouchableOpacity>
       <Text style={styles.text}>Contatore</Text>
