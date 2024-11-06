@@ -3,13 +3,25 @@ import { theme } from "../../theme";
 import { useRouter } from "expo-router";
 import { registerForPushNotificationsAsync } from "../../utils/registerForPushNotificationsAsync";
 import * as Notifications from "expo-notifications";
+import { useEffect, useState } from "react";
 
 export default function CounterScreen() {
+  const [secondElapsed, setSecondElapsed] = useState(0);
   const router = useRouter();
   const handleRequestPermission = async () => {
     const result = await registerForPushNotificationsAsync();
     console.log("Permesso:", result);
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setSecondElapsed((val) => val + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   const scheduleNotification = async () => {
     const result = await registerForPushNotificationsAsync();
@@ -35,6 +47,7 @@ export default function CounterScreen() {
 
   return (
     <View style={styles.container}>
+      <Text>{secondElapsed}</Text>
       <TouchableOpacity onPress={() => router.navigate("/idea")}>
         <Text style={styles.linkStyle}>Vai a Idea!</Text>
       </TouchableOpacity>
