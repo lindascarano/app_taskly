@@ -4,9 +4,24 @@ import { useRouter } from "expo-router";
 import { registerForPushNotificationsAsync } from "../../utils/registerForPushNotificationsAsync";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
+import { Duration, intervalToDuration, isBefore } from "date-fns";
+
+//10 seconds from now
+const timestamp = Date.now() + 10 * 1000;
+
+type CountdownStatus = {
+  isOverdue: boolean;
+  distance: Duration;
+}
 
 export default function CounterScreen() {
-  const [secondElapsed, setSecondElapsed] = useState(0);
+  const [status, setStaus] = useState<CountdownStatus>({
+    isOverdue: false,
+    distance: {},
+  });
+
+  console.log(status);
+
   const router = useRouter();
   const handleRequestPermission = async () => {
     const result = await registerForPushNotificationsAsync();
@@ -15,7 +30,14 @@ export default function CounterScreen() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setSecondElapsed((val) => val + 1);
+      const isOverdue = isBefore(timestamp, Date.now());
+
+      const distance = intervalToDuration(
+        isOverdue
+          ? { start: timestamp, end: Date.now() }
+          : { start: Date.now(), end: timestamp },
+      );
+      setStaus({ isOverdue, distance });
     }, 1000);
 
     return () => {
@@ -46,8 +68,8 @@ export default function CounterScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text>{secondElapsed}</Text>
+    <View style={[styles.container]}>
+     
       <TouchableOpacity onPress={() => router.navigate("/idea")}>
         <Text style={styles.linkStyle}>Vai a Idea!</Text>
       </TouchableOpacity>
