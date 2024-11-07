@@ -5,6 +5,7 @@ import { registerForPushNotificationsAsync } from "../../utils/registerForPushNo
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import { Duration, intervalToDuration, isBefore } from "date-fns";
+import { TimeSegment } from "../../componets/TimeSegment";
 
 //10 seconds from now
 const timestamp = Date.now() + 10 * 1000;
@@ -12,7 +13,7 @@ const timestamp = Date.now() + 10 * 1000;
 type CountdownStatus = {
   isOverdue: boolean;
   distance: Duration;
-}
+};
 
 export default function CounterScreen() {
   const [status, setStaus] = useState<CountdownStatus>({
@@ -20,7 +21,7 @@ export default function CounterScreen() {
     distance: {},
   });
 
-  console.log(status);
+  // console.log(status);
 
   const router = useRouter();
   const handleRequestPermission = async () => {
@@ -68,8 +69,53 @@ export default function CounterScreen() {
   };
 
   return (
-    <View style={[styles.container]}>
-     
+    <View
+      style={[
+        styles.container,
+        status.isOverdue ? styles.containerLate : undefined,
+      ]}
+    >
+      {!status.isOverdue ? (
+        <Text style={[styles.heading, styles.whiteText]}>Attività da fare</Text>
+      ) : (
+        <Text style={[styles.heading, styles.whiteText]}>
+          Attività in ritardo!
+        </Text>
+      )}
+      <View style={styles.row}>
+        <TimeSegment
+          unit="Giorni"
+          number={status.distance?.days ?? 0}
+          textStyle={status.isOverdue ? styles.whiteText : undefined}
+        />
+        <TimeSegment
+          unit="Ore"
+          number={status.distance?.hours ?? 0}
+          textStyle={status.isOverdue ? styles.whiteText : undefined}
+        />
+
+        <TimeSegment
+          unit="Minuti"
+          number={status.distance?.minutes ?? 0}
+          textStyle={status.isOverdue ? styles.whiteText : undefined}
+        />
+        <TimeSegment
+          unit="Secondi"
+          number={status.distance?.seconds ?? 0}
+          textStyle={status.isOverdue ? styles.whiteText : undefined}
+        />
+      </View>
+
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.8}
+        onPress={scheduleNotification}
+      >
+        <Text style={styles.bottonText}>Ho fatto l'attività!</Text>
+        {/* <Text style={styles.bottonText}>
+          Schedula una Notifica - dopo 5 sec
+        </Text> */}
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => router.navigate("/idea")}>
         <Text style={styles.linkStyle}>Vai a Idea!</Text>
       </TouchableOpacity>
@@ -80,15 +126,6 @@ export default function CounterScreen() {
       >
         <Text style={styles.bottonText}>
           Richiesta permesso per notifiche push
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.8}
-        onPress={scheduleNotification}
-      >
-        <Text style={styles.bottonText}>
-          Schedula una Notifica - dopo 5 sec
         </Text>
       </TouchableOpacity>
       <Text style={styles.text}>Contatore</Text>
@@ -102,6 +139,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: theme.colorWhite,
+  },
+  containerLate: {
+    backgroundColor: theme.colorRed,
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 24,
+    color: theme.colorGrigioScuro,
+  },
+  whiteText: {
+    color: theme.colorWhite,
+  },
+  row: {
+    flexDirection: "row",
+    marginBottom: 24,
   },
   button: {
     backgroundColor: theme.colorAzzurroTeal,
