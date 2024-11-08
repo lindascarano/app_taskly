@@ -169,6 +169,10 @@ _Scheduling Notifications_
 - How do I render a UI that updates every second? -> React compiler doesn't update UI elements that haven't changed state. It is someting to have in mind if you are building a UI that needs to update every second.
 To update the setSecondElapsed every second I going to use useEffect() and an intervalId. We want to render this useEffect() only once, that's why we pass as second argument an empty array []. Then, we want to create a Node.js interval whit setInterval() -> the first argument for setInterval() is someting to do after this interval, the second argument is how long you want the interval to be (in milliseconds). In this setInterval() we want to setSecondElapse, we can't use seconElapse because this function only has access to the thing that are in the useEffect(). You can pass the newState in the useEffect() so you can pass setSecondElapse that tells you what the current value is. So, we take the currnt value (val) and increment it by 1: val + 1. Than, you have to make sure that you tidy up after yourself, so you need to clear the interval when the component get unwanted with clearInterval(intervalId), this ensures that we are not gonna have multiples of intervals running at the same time. The setInterval actually returns a number, which is the intervalId
 
+_Data persistance for countdown state_
+
+- Decide on the frequency you'd like to set and figure out how many milliseconds it is (then we can add that amount of milliseconds to Date.now() to get the next due date).
+
 
 _General Note_
 
@@ -182,7 +186,7 @@ _General Note_
 
 Andrpoid Mobile: Enable Developer Options->Debug USB and Debug ADB for mirroring
 
-- Creating Timer -> Create TimerSegment and Add notes for what I did.
+
 
 
 

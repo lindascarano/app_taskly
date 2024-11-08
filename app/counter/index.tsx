@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { theme } from "../../theme";
 import { useRouter } from "expo-router";
 import { registerForPushNotificationsAsync } from "../../utils/registerForPushNotificationsAsync";
@@ -6,9 +6,19 @@ import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import { Duration, intervalToDuration, isBefore } from "date-fns";
 import { TimeSegment } from "../../componets/TimeSegment";
+import { getFromStorage, saveToStorage } from "../../utils/storage";
 
-//10 seconds from now
-const timestamp = Date.now() + 10 * 1000;
+// //10 seconds from now
+// const timestamp = Date.now() + 10 * 1000;
+//10 seconds in ms
+const frequency = 10 * 1000;
+
+const countdownStorageKey = "taskly-countdown";
+
+type PersistedCountdownState = {
+  currentNotificationId: string | undefined;
+  completedAtTimestamps: number[];
+};
 
 type CountdownStatus = {
   isOverdue: boolean;
@@ -16,10 +26,24 @@ type CountdownStatus = {
 };
 
 export default function CounterScreen() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [countdownState, setCountdownState] =
+    useState<PersistedCountdownState>();
   const [status, setStaus] = useState<CountdownStatus>({
     isOverdue: false,
     distance: {},
   });
+
+  //We want to initialize by fetching countdownState from Storage.
+  useEffect(() => {
+    const init = async () => {
+      const value = await getFromStorage(countdownStorageKey);
+      setCountdownState(value);
+    };
+    init();
+  }, []);
+
+  const lastCompletedAt = countdownState?.completedAtTimestamps[0];
 
   // console.log(status);
 
@@ -31,6 +55,12 @@ export default function CounterScreen() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
+      const timestamp = lastCompletedAt
+        ? lastCompletedAt + frequency
+        : Date.now();
+      if (lastCompletedAt) {
+        setIsLoading(false);
+      }
       const isOverdue = isBefore(timestamp, Date.now());
 
       const distance = intervalToDuration(
@@ -44,20 +74,23 @@ export default function CounterScreen() {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+    //useEffect runs every time, the lastCompletedAt value is updated.
+    //When lastCompletedAt is updated, we clear the interval and then useEffect runs again.
+  }, [lastCompletedAt]);
 
   const scheduleNotification = async () => {
+    let pushNotificationId;
     const result = await registerForPushNotificationsAsync();
     if (result === "granted") {
-      await Notifications.scheduleNotificationAsync({
+      pushNotificationId = await Notifications.scheduleNotificationAsync({
         content: {
-          title: "Sono la notifica dalla tua App! 💌",
+          title: "Cosa da fare!",
         },
 
         // You can schedule the notifications based on differnet intervals:
         //look at the Expo Docs:https://docs.expo.dev/versions/latest/sdk/notifications/#schedulablenotificationtriggerinput
         trigger: {
-          seconds: 5,
+          seconds: frequency / 1000,
         },
       });
     } else {
@@ -66,7 +99,32 @@ export default function CounterScreen() {
         "Attiva il permesso per le notifiche per Expo Go nelle Impostazioni del tuo dispositivo!",
       );
     }
+
+    if (countdownState?.currentNotificationId) {
+      await Notifications.cancelScheduledNotificationAsync(
+        countdownState.currentNotificationId,
+      );
+    }
+
+    const newCountdownState: PersistedCountdownState = {
+      currentNotificationId: pushNotificationId,
+      completedAtTimestamps: countdownState
+        ? [Date.now(), ...countdownState.completedAtTimestamps]
+        : [Date.now()],
+    };
+    setCountdownState(newCountdownState);
+
+    await saveToStorage(countdownStorageKey, newCountdownState);
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.activityIndicator}>
+        <ActivityIndicator></ActivityIndicator>
+      </View>
+    );
+ }
+
 
   return (
     <View
@@ -178,5 +236,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 24,
     textDecorationLine: "underline",
+  },
+  activityIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.colorWhite,
   },
 });
