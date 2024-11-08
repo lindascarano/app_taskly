@@ -1,4 +1,11 @@
-import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { theme } from "../../theme";
 import { useRouter } from "expo-router";
 import { registerForPushNotificationsAsync } from "../../utils/registerForPushNotificationsAsync";
@@ -13,9 +20,9 @@ import { getFromStorage, saveToStorage } from "../../utils/storage";
 //10 seconds in ms
 const frequency = 10 * 1000;
 
-const countdownStorageKey = "taskly-countdown";
+export const countdownStorageKey = "taskly-countdown";
 
-type PersistedCountdownState = {
+export type PersistedCountdownState = {
   currentNotificationId: string | undefined;
   completedAtTimestamps: number[];
 };
@@ -123,8 +130,7 @@ export default function CounterScreen() {
         <ActivityIndicator></ActivityIndicator>
       </View>
     );
- }
-
+  }
 
   return (
     <View

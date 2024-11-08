@@ -173,10 +173,16 @@ _Data persistance for countdown state_
 
 - Decide on the frequency you'd like to set and figure out how many milliseconds it is (then we can add that amount of milliseconds to Date.now() to get the next due date).
 
+_Async Storage_
+
+- You can access the same key of the same async storage in a differnet component or differnet screen
+
 
 _General Note_
 
 - If you wwant to do analytics on a mobile App you need to install React Native Firebase.
+
+- in the Hisory screen I'm going to show a log for all the times that I have done the thing and hit the button "Ho fatto l'attività!".
 
 
 - ` : backtick
