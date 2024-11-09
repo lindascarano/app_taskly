@@ -1,3 +1,9 @@
+**What we have in this App**
+
+We have a shopping list, where we can add things to our list.
+We can delete them, we can mark them as completed,we have some haptics, we have ASIC storage.
+We have our counter or timeout scheduler, where we count down from a time and we can schedule notifications to remind us to do something.
+
 **Settings**
 
 - nodejs version 20.11.1
@@ -48,6 +54,8 @@ _Genearal commands_
       * Before you can send any push notifications, we need to ask for permission. Let's added an utility (registerForPushNotificationsAsync.ts) for it: this will check if the user has granted push permission already and if not, requests it. Starting Android 8.0, all notifications must be assigned to a channel. Also on Android 13, app users must opt-in to receive notifications via a permissions prompt that is automatically triggered by the operating system. This prompt will not appear until at least one notification channel is created which is why we need to register a channel for Android.
 
 - npx expo install date-fns : It is a library for working with dates a bit easier. I will use that for the Timer Traker in the counter screen. Look at the Docs in https://date-fns.org/
+
+- npx expo install react-native-confetti-cannon : JS library to add some confetti
 
 ---
 
@@ -177,6 +185,10 @@ _Async Storage_
 
 - You can access the same key of the same async storage in a differnet component or differnet screen
 
+_Confetti & Haptics_
+
+- I added some confetti and a good success haptic feedback when you press the botton that the thing is done.
+
 
 _General Note_
 
@@ -191,6 +203,8 @@ _General Note_
 **What's Next**
 
 Andrpoid Mobile: Enable Developer Options->Debug USB and Debug ADB for mirroring
+
+- Confetti  Haptics
 
 
 

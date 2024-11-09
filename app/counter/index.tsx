@@ -5,20 +5,27 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  useWindowDimensions,
 } from "react-native";
 import { theme } from "../../theme";
 import { useRouter } from "expo-router";
 import { registerForPushNotificationsAsync } from "../../utils/registerForPushNotificationsAsync";
 import * as Notifications from "expo-notifications";
-import { useEffect, useState } from "react";
+import Device from "expo-device";
+import { useEffect, useRef, useState } from "react";
 import { Duration, intervalToDuration, isBefore } from "date-fns";
 import { TimeSegment } from "../../componets/TimeSegment";
 import { getFromStorage, saveToStorage } from "../../utils/storage";
+import * as Haptics from "expo-haptics";
+import ConfettiCannon from "react-native-confetti-cannon";
 
 // //10 seconds from now
 // const timestamp = Date.now() + 10 * 1000;
 //10 seconds in ms
-const frequency = 10 * 1000;
+// const frequency = 10 * 1000;
+
+// 2 weeks in ms
+const frequency = 14 * 24 * 60 * 60 * 1000;
 
 export const countdownStorageKey = "taskly-countdown";
 
@@ -33,6 +40,8 @@ type CountdownStatus = {
 };
 
 export default function CounterScreen() {
+  const { width } = useWindowDimensions();
+  const confettiRef = useRef<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [countdownState, setCountdownState] =
     useState<PersistedCountdownState>();
@@ -86,12 +95,14 @@ export default function CounterScreen() {
   }, [lastCompletedAt]);
 
   const scheduleNotification = async () => {
+    confettiRef?.current?.start();
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     let pushNotificationId;
     const result = await registerForPushNotificationsAsync();
     if (result === "granted") {
       pushNotificationId = await Notifications.scheduleNotificationAsync({
         content: {
-          title: "Cosa da fare!",
+          title: "E' ora di lavare la macchina!",
         },
 
         // You can schedule the notifications based on differnet intervals:
@@ -101,10 +112,12 @@ export default function CounterScreen() {
         },
       });
     } else {
-      Alert.alert(
-        "Abilita per schedulare le notifiche sul tuo dispositivo!",
-        "Attiva il permesso per le notifiche per Expo Go nelle Impostazioni del tuo dispositivo!",
-      );
+      if (Device.isDevice) {
+        Alert.alert(
+          "Abilita per schedulare le notifiche sul tuo dispositivo!",
+          "Attiva il permesso per le notifiche per Expo Go nelle Impostazioni del tuo dispositivo!",
+        );
+      }
     }
 
     if (countdownState?.currentNotificationId) {
@@ -139,11 +152,13 @@ export default function CounterScreen() {
         status.isOverdue ? styles.containerLate : undefined,
       ]}
     >
-      {!status.isOverdue ? (
-        <Text style={[styles.heading, styles.whiteText]}>Attività da fare</Text>
-      ) : (
+      {status.isOverdue ? (
         <Text style={[styles.heading, styles.whiteText]}>
-          Attività in ritardo!
+          Lavaggio della macchina in ritardo di...
+        </Text>
+      ) : (
+        <Text style={[styles.heading, styles.blacktext]}>
+          Prossimo lavaggio della macchina tra...
         </Text>
       )}
       <View style={styles.row}>
@@ -175,7 +190,8 @@ export default function CounterScreen() {
         activeOpacity={0.8}
         onPress={scheduleNotification}
       >
-        <Text style={styles.bottonText}>Ho fatto l'attività!</Text>
+        <Text style={styles.bottonText}>Ho lavato la macchina!!</Text>
+        {/* <Text style={styles.bottonText}>Ho fatto l'attività!</Text> */}
         {/* <Text style={styles.bottonText}>
           Schedula una Notifica - dopo 5 sec
         </Text> */}
@@ -193,6 +209,17 @@ export default function CounterScreen() {
         </Text>
       </TouchableOpacity>
       <Text style={styles.text}>Contatore</Text>
+      {/* if you are building an App that needs to be responsive 
+      both horizontally and vertically, using the useWindowDimensions Hook
+      ensures that the width dimension considered is that of the device
+      rotated in that specific direction */}
+      <ConfettiCannon
+        ref={confettiRef}
+        count={50}
+        origin={{ x: width / 2, y: -30 }}
+        autoStart={false}
+        fadeOut={true}
+      />
     </View>
   );
 }
@@ -208,6 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colorRed,
   },
   heading: {
+    marginHorizontal: 8,
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 24,
@@ -215,6 +243,9 @@ const styles = StyleSheet.create({
   },
   whiteText: {
     color: theme.colorWhite,
+  },
+  blacktext: {
+    color: theme.colorBlack,
   },
   row: {
     flexDirection: "row",
