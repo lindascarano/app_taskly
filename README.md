@@ -1,7 +1,7 @@
 **What we have in this App**
 
 We have a shopping list, where we can add things to our list.
-We can delete them, we can mark them as completed,we have some haptics, we have ASIC storage.
+We can delete them, we can mark them as completed,we have some haptics, we have Async storage.
 We have our counter or timeout scheduler, where we count down from a time and we can schedule notifications to remind us to do something.
 
 **Settings**
@@ -121,10 +121,6 @@ _Ways to how to create a unique id_
 
 In this case, the id has to be unique within our phone I will use Time Stamp:   id: new Date().toTimeString()
 
-_ScrollView_
-
--ScrollView Component : to 
-
 _Mirroring My Android Mobile_
 
 - scrcpy: Download from https://github.com/Genymobile/scrcpy/blob/master/doc/windows.md -> scrcpy-win64-v2.7.zip and open the scrcpy terminal by double-clicking on open_a_terminal_here.bat. Check from terminal that your device is in the list of adb devices. Then command scrcpy. (Android devices must enable Developer Options > USB Debugging and ADB Debugging Enabled). I didn't use the scrcpy library because I'm using the npm package, just follow the instructions and official documentation -> https://github.com/Genymobile/scrcpy/blob/master/doc/windows.md.
@@ -200,11 +196,10 @@ _General Note_
 - ` : backtick
 
 ---
-**What's Next**
+**Mirroring My Android using scrcpy**
 
 Andrpoid Mobile: Enable Developer Options->Debug USB and Debug ADB for mirroring
 
-- Confetti  Haptics
 
 
 
